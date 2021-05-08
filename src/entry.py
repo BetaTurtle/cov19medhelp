@@ -22,7 +22,7 @@ def entry(bot, update):
                 thread_link = 't.me/covid19indiaorg_medhelpchat/'+str(update.message.reply_to_message.message_id)+'?comment='+str(update.message.message_id)
                 bot.sendMessage(
                     chat_id=personal_chat_id,
-                    text="There is a new comment to your query\n"+thread_link)
+                    text="There is a new comment to your query.\nPlease continue discussion here\n\n"+thread_link)
             except Exception as e:
                 logging.error(e)
             return
@@ -34,7 +34,7 @@ def entry(bot, update):
             # res = bot.forwardMessage(chat_id=-1001180443770, from_chat_id=update.message.chat.id, message_id=update.message.message_id)
             res = bot.sendMessage(chat_id=-1001180443770, text=update.message.text+"\n\n#q"+str(update.message.chat.id))
             print(res)
-            bot.sendMessage(chat_id=update.message.chat.id, text="Query posted: https://t.me/covid19indiaorg_medhelp/"+str(res['message_id'])+'\n\nPlease add additional info to the thread here')
+            bot.sendMessage(chat_id=update.message.chat.id, text="Query posted: https://t.me/covid19indiaorg_medhelp/"+str(res['message_id'])+'\n\nI will notify you when a Doctor responds. If you have additional requests or information please share in this thread.')
         else:
             bot.sendMessage(
                 chat_id=update.message.chat_id, 
