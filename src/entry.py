@@ -39,14 +39,14 @@ def entry(bot, update):
             bot.sendMessage(
                 chat_id=update.message.chat_id, 
                 text="""
-Please send your queries in the following format\n
+Please copy the following template and send your queries in this format.
+You will be notified when a Doctor responds to your query.
+
 ```
 Age: 
 Gender: 
 Location: 
 List of complaints: 
-History with Covid 
-(date of test, contact with patients, etc): 
 Covid Test Result: 
 SpO2/Temperature: 
 Comments: 
