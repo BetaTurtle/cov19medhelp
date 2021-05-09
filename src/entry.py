@@ -9,7 +9,7 @@ import logging
 def entry(bot, update):
     try:
         # res = bot.send_message(chat_id="-1001164870268", text=json.dumps(update.to_dict(), indent=2))
-        print(json.dumps(update.to_dict(), indent=2))
+        # print(json.dumps(update.to_dict(), indent=2))
         pass
     except Exception as e:
         logging.error(e)
@@ -36,20 +36,20 @@ def entry(bot, update):
             print(res)
             bot.sendMessage(chat_id=update.message.chat.id, text="Query posted: https://t.me/covid19indiaorg_medhelp/"+str(res['message_id'])+'\n\nI will notify you when a Doctor responds. If you have additional requests or information please share in this thread.')
         else:
-            bot.sendMessage(
+            res = bot.sendMessage(
                 chat_id=update.message.chat_id, 
                 text="""
-Please copy the following template and send your queries in this format.
-You will be notified when a Doctor responds to your query.
+Please copy the following template and send your queries in this format\.
+You will be notified when a Doctor responds to your query\.
 
 ```
 Age: 
 Gender: 
 Location: 
-List of complaints: 
 Covid Test Result: 
 SpO2/Temperature: 
-Comments: 
+List of Complaints: 
+Other Comments: 
 
 ```
 """,
