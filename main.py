@@ -48,6 +48,8 @@ def main():
         except Unauthorized:
             # The user has removed or blocked the bot.
             update_id += 1
+        except Error:
+            sleep(5)
         if int(time()) - start_time > LIFESPAN:
             logging.info("Enough for the day! Passing on to next Meeseek")
             with open("/tmp/update_id", "w") as the_file:
