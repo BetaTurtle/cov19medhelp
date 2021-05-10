@@ -48,7 +48,9 @@ def main():
         except Unauthorized:
             # The user has removed or blocked the bot.
             update_id += 1
-        except Error:
+        except Exception as e:
+            logging.error("Generic Error")
+            logging.error(e)
             sleep(5)
         if int(time()) - start_time > LIFESPAN:
             logging.info("Enough for the day! Passing on to next Meeseek")

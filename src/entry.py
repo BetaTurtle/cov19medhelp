@@ -5,11 +5,22 @@ import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import json
 import logging
+from expiringdict import ExpiringDict
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+
+temp_flood_ban_list = ExpiringDict(max_len=100, max_age_seconds=60)
 
 def entry(bot, update):
     try:
         # res = bot.send_message(chat_id="-1001164870268", text=json.dumps(update.to_dict(), indent=2))
-        print(json.dumps(update.to_dict(), indent=2))
+        # print(json.dumps(update.to_dict(), indent=2))
+        logging.info(update)
         pass
     except Exception as e:
         logging.error(e)
@@ -30,11 +41,13 @@ def entry(bot, update):
     if update.message and update.message.text and update.message.chat.type == "private":
         matches = ["Age", "Gender"]
         if any(x in update.message.text for x in matches):
-            print("forwarding to channel")
             # res = bot.forwardMessage(chat_id=-1001180443770, from_chat_id=update.message.chat.id, message_id=update.message.message_id)
-            res = bot.sendMessage(chat_id=-1001180443770, text=update.message.text+"\n\n"+"from: "+update.message.chat.first_name+" #q"+str(update.message.chat.id))
-            print(res)
-            bot.sendMessage(chat_id=update.message.chat.id, text="Query posted: https://t.me/covid19indiaorg_medhelp/"+str(res['message_id'])+'\n\nI will notify you when a Doctor responds. If you have additional requests or information please share in this thread.')
+            if not temp_flood_ban_list.get(update.message.chat.id):
+                res = bot.sendMessage(chat_id=-1001180443770, text=update.message.text+"\n\n"+"from: "+update.message.chat.first_name+" #q"+str(update.message.chat.id))
+                bot.sendMessage(chat_id=update.message.chat.id, text="Query posted: https://t.me/covid19indiaorg_medhelp/"+str(res['message_id'])+'\n\nI will notify you when a Doctor responds. If you have additional requests or information please share in this thread.')
+                temp_flood_ban_list[update.message.chat.id] = True
+            else:
+                bot.sendMessage(chat_id=update.message.chat.id, text="Please wait a few minutes before posting your next query 🙏")
         else:
             bot.sendMessage(
                 chat_id=update.message.chat_id, 
